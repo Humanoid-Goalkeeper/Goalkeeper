@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+    content="Humanoid Goalkeeper: Learning from Position Conditioned Task-Motion Constraints">
+  <meta name="keywords" content="Humanoid Robot, Whole-body Control, Dynamic Interaction">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>
+    Humanoid Goalkeeper: Learning from Position Conditioned Task-Motion Constraints
+  </title>
+
+  <!-- <link rel="apple-touch-icon" sizes="57x57"
+    href="//www-media.stanford.edu/assets/favicon/apple-touch-icon-57x57.png" />https://youtu.be/ZK0gPame19M
+  <link rel="apple-touch-icon" sizes="60x60"
+    href="//www-media.stanford.edu/assets/favicon/apple-touch-icon-60x60.png" />
+  <link rel="apple-touch-icon" sizes="72x72"
+    href="//www-media.stanford.edu/assets/favicon/apple-touch-icon-72x72.png" />
+  <link rel="apple-touch-icon" sizes="76x76"
+    href="//www-media.stanford.edu/assets/favicon/apple-touch-icon-76x76.png" />
+  <link rel="apple-touch-icon" sizes="114x114"
+    href="//www-media.stanford.edu/assets/favicon/apple-touch-icon-114x114.png" />
+  <link rel="apple-touch-icon" sizes="120x120"
+    href="//www-media.stanford.edu/assets/favicon/apple-touch-icon-120x120.png" />
+  <link rel="apple-touch-icon" sizes="144x144"
+    href="//www-media.stanford.edu/assets/favicon/apple-touch-icon-144x144.png" />
+  <link rel="apple-touch-icon" sizes="152x152"
+    href="//www-media.stanford.edu/assets/favicon/apple-touch-icon-152x152.png" />
+  <link rel="apple-touch-icon" sizes="180x180"
+    href="//www-media.stanford.edu/assets/favicon/apple-touch-icon-180x180.png" />
+
+  <link rel="icon" type="image/png" href="//www-media.stanford.edu/assets/favicon/favicon-196x196.png"
+    sizes="196x196" />
+  <link rel="icon" type="image/png" href="//www-media.stanford.edu/assets/favicon/favicon-192x192.png"
+    sizes="192x192" />
+  <link rel="icon" type="image/png" href="//www-media.stanford.edu/assets/favicon/favicon-128.png" sizes="128x128" />
+  <link rel="icon" type="image/png" href="//www-media.stanford.edu/assets/favicon/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/png" href="//www-media.stanford.edu/assets/favicon/favicon-32x32.png" sizes="32x32" />
+  <link rel="icon" type="image/png" href="//www-media.stanford.edu/assets/favicon/favicon-16x16.png" sizes="16x16" />
+
+  <link rel="mask-icon" href="//www-media.stanford.edu/assets/favicon/safari-pinned-tab.svg" color="#ffffff">
+  <meta name="application-name" content="Stanford University" />
+  <meta name="msapplication-TileColor" content="#FFFFFF" />
+  <meta name="msapplication-TileImage" content="//www-media.stanford.edu/assets/favicon/mstile-144x144.png" />
+  <meta name="msapplication-square70x70logo" content="//www-media.stanford.edu/assets/favicon/mstile-70x70.png" />
+  <meta name="msapplication-square150x150logo" content="//www-media.stanford.edu/assets/favicon/mstile-150x150.png" />
+  <meta name="msapplication-square310x310logo" content="//www-media.stanford.edu/assets/favicon/mstile-310x310.png" /> -->
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-QZ38WT2YPD"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-QZ38WT2YPD');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+
+  <script src="https://kit.fontawesome.com/19914a84eb.js" crossorigin="anonymous"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+
+<section class="hero is-link is-fullheight video" style="overflow: hidden; position:relative;">
+  <div class="hero-video" style="height: 100%; width: 177.77777778vh; min-width: 100%;min-height: 56.25vw;">
+    <video playsinline autoplay preload="none" muted loop>
+      <source src=" ./static/videos-gk/teaser-rotate.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="overlay"></div>
+  <!-- Hero head: will stick at the top -->
+  <div class="hero-head is-hidden-mobile">
+    <header class="navbar">
+      <div class="container is-size-5">
+        <div class="navbar-menu">
+          <div class="navbar-end">
+            <a class="navbar-item pl-4 pr-4" href="./static/Humanoid_Goalkeeper.pdf">
+              <span class="icon" style="margin-right:5px;">
+                <img src="./static/images/pdf.svg" alt="PDF" />
+              </span>
+              <span>Paper</span>
+            </a>
+            <a class="navbar-item  pl-4 pr-4" href="https://humanoid-goalkeeper.github.io/Goalkeeper">
+              <span class="icon" style="margin-right:5px;">
+                <img src="./static/images/arxiv.svg" alt="ArXiv" />
+              </span>
+              <span>arXiv</span> </a>
+            <a href="https://youtu.be/ZK0gPame19M" class="navbar-item  pl-4 pr-4">
+              <span class="icon" style="margin-right:5px;">
+                <img src="./static/images/youtube.svg" alt="Youtube" />
+              </span>
+              <span>Video</span> </a>
+            <span class="navbar-item  pl-4 pr-4">
+              <a href="https://github.com/InternRobotics/Humanoid-Goalkeeper" class="button is-inverted is-large">
+                <span class="icon">
+                  <i class="fab fa-github"></i>
+                </span>
+                <span>Code</span>
+              </a>
+            </span>
+          </div>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <!-- Hero content: will be in the middle -->
+  <div class="hero-body">
+    <div class="container has-text-centered">
+      <h1 class="title is-1 publication-title is-size-1-mobile" style="font-size: 7rem; opacity: 0.7;">
+        Humanoid Goalkeeper
+      </h1>
+      <h1 class="subtitle is-1 publication-title is-size-4-mobile" style="font-size: 3rem; opacity: 0.7;">
+        Learning from Position Conditioned Task-Motion Constraints
+      </h1>
+      <h1 class="is-2 is-italic is-size-4-mobile" style="font-size: 2rem; opacity: 80%; opacity: 0.7;">
+        The University of Hong Kong, Shanghai AI Laboratory
+      </h1>
+      <p class="authors" style="margin-top:1rem; font-size:1.2rem; opacity:0.9;">
+        <a href="https://renjunli99.github.io/" target="_blank" rel="noopener">Junli Ren</a><sup>*</sup>,
+        <a href="https://junfeng-long.github.io/" target="_blank" rel="noopener">Junfeng Long</a><sup>*</sup>,
+        <a href="https://taohuang13.github.io/" target="_blank" rel="noopener">Tao Huang</a>,
+        <a href="https://why618188.github.io/" target="_blank" rel="noopener">Huayi Wang</a>,
+        <a href="https://scholar.google.com/citations?user=Vc3DCUIAAAAJ&hl=zh-TW" target="_blank" rel="noopener">Zirui Wang</a>,
+        <a href="https://trap-1.github.io/" target="_blank" rel="noopener">Feiyu Jia</a>,
+        <a href="https://zwt006.github.io/" target="_blank" rel="noopener">Wentao Zhang</a>,
+        <a href="https://wangjingbo1219.github.io/" target="_blank" rel="noopener">Jingbo Wang</a><sup>†</sup>,
+        <a href="https://luoping.me/" target="_blank" rel="noopener">Ping Luo</a><sup>†</sup>,
+        <a href="https://oceanpang.github.io/" target="_blank" rel="noopener">Jiangmiao Pang</a><sup>†</sup>
+      </p>
+      <div class="column has-text-centered is-hidden-tablet">
+        <div class="publication-links">
+          <!-- PDF Link. -->
+          <span class="link-block">
+            <a href="./static/Humanoid_Goalkeeper.pdf" class="external-link button is-normal is-rounded is-dark">
+              <span class="icon">
+                <img src="./static/images/pdf.svg" alt="PDF" />
+              </span>
+              <span>Paper</span>
+            </a>
+          </span>
+          <span class="link-block">
+            <a href="https://humanoid-goalkeeper.github.io/Goalkeeper/" class="external-link button is-normal is-rounded is-dark">
+              <span class="icon">
+                <img src="./static/images/arxiv.svg" alt="ArXiv" />
+              </span>
+              <span>arXiv</span>
+            </a>
+          </span>
+          <!-- Video Link. -->
+          <span class="link-block">
+            <a href="https://youtu.be/ZK0gPame19M" class="external-link button is-normal is-rounded is-dark">
+              <span class="icon">
+                <img src="./static/images/youtube.svg" alt="Youtube" />
+              </span>
+              <span>Video</span>
+            </a>
+          </span>
+          <!-- Code Link. -->
+          <span class="link-block">
+            <a href="https://github.com/InternRobotics/Humanoid-Goalkeeper/"
+              class="external-link button is-normal is-rounded is-dark">
+              <span class="icon">
+                <i class="fab fa-github"></i>
+              </span>
+              <span>Code</span>
+            </a>
+          </span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Hero footer: will stick at the bottom -->
+  <div class="hero-foot is-hidden-mobile">
+    <nav class="tabs is-boxed is-fullwidth is-size-5">
+      <ul>
+        <li><a href="#division">Wide Ranges</a></li>
+        <li><a href="#kick">Penalty Kicks</a></li>
+        <li><a href="#continue">Continuous Performance</a></li>
+        <li><a href="#escape">Esacpe Balls</a></li>
+        <li><a href="#camera">Onboard Camera</a></li>
+      </ul>
+    </nav>
+  </div>
+</section>
+
+
+
+
+<section class="section is-medium narrow-padding" id="overview">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-four-fifths has-text-justified is-hidden-mobile">
+        <h2 class="subtitle ">
+          <span class="hl-green">Humanoid Goalkeeper</span> learns a single end-to-end RL policy, executing agile, human-like motions to intercept flying balls, as well as performing tasks such as escaping a ball using jump and squat motions. 
+        <br>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="section narrow-padding" id="video">
+  <div class="container is-max-desktop">
+    <!-- <h2 class="title is-1 has-text-centered is-size-4-mobile">f Video</h2> -->
+     <!-- https://youtu.be/ZK0gPame19M -->
+    <iframe width="100%" style="aspect-ratio: 16 / 9;" src=" 
+      https://www.youtube.com/embed/ZK0gPame19M" title="Humanoid Goalkeeper full video"
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  </div>
+</section>
+
+<section class="section is-small" id="division">
+  <h2 class="title is-1 has-text-centered is-size-4-mobile">Wide Ranges</h2>
+      </div>
+    </div>
+    <div class="columns is-multiline">
+      <!-- 第一行 -->
+      <div class="column is-3 p-1">
+        <video autoplay muted loop playsinline width="100%">
+          <source src="./static/videos-gk/lu-1.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="column is-3 p-1">
+        <video autoplay muted loop playsinline width="100%">
+          <source src="./static/videos-gk/lu-2.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="column is-3 p-1">
+        <video autoplay muted loop playsinline width="100%">
+          <source src="./static/videos-gk/ru-1.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="column is-3 p-1">
+        <video autoplay muted loop playsinline width="100%">
+          <source src="./static/videos-gk/ru-2.mp4" type="video/mp4">
+        </video>
+      </div>
+      <!-- 第二行 -->
+      <div class="column is-3 p-1">
+        <video autoplay muted loop playsinline width="100%">
+          <source src="./static/videos-gk/lm-1.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="column is-3 p-1">
+        <video autoplay muted loop playsinline width="100%">
+          <source src="./static/videos-gk/lm-2.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="column is-3 p-1">
+        <video autoplay muted loop playsinline width="100%">
+          <source src="./static/videos-gk/rm-1.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="column is-3 p-1">
+        <video autoplay muted loop playsinline width="100%">
+          <source src="./static/videos-gk/rm-2.mp4" type="video/mp4">
+        </video>
+      </div>
+      <!-- 第三行 -->
+      <div class="column is-3 p-1">
+        <video autoplay muted loop playsinline width="100%">
+          <source src="./static/videos-gk/ll-1.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="column is-3 p-1">
+        <video autoplay muted loop playsinline width="100%">
+          <source src="./static/videos-gk/ll-2.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="column is-3 p-1">
+        <video autoplay muted loop playsinline width="100%">
+          <source src="./static/videos-gk/rl-1.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="column is-3 p-1">
+        <video autoplay muted loop playsinline width="100%">
+          <source src="./static/videos-gk/rl-2.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="section is-small" id="kick">
+  <h2 class="title is-1 has-text-centered is-size-4-mobile">Penalty Kicks</h2>
+  <div class="columns is-gapless">
+    <div class="column is-6 p-1">
+      <video autoplay muted loop playsinline width="100%">
+        <source src="./static/videos-gk/kick1.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="column is-6 p-1">
+      <video autoplay muted loop playsinline width="100%">
+        <source src="./static/videos-gk/kick-2.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
+</section>
+
+<section class="section is-small" id="continue">
+  <h2 class="title is-1 has-text-centered is-size-4-mobile">Continuous Performance</h2>
+  <div class="columns is-multiline">
+    <div class="column is-6 p-1">
+      <video autoplay muted loop playsinline width="100%">
+        <source src="./static/videos-gk/con-1.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="column is-6 p-1">
+      <video autoplay muted loop playsinline width="100%">
+        <source src="./static/videos-gk/con-2.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="column is-6 p-1">
+      <video autoplay muted loop playsinline width="100%">
+        <source src="./static/videos-gk/con-3.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="column is-6 p-1">
+      <video autoplay muted loop playsinline width="100%">
+        <source src="./static/videos-gk/con-4.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
+</section>
+
+<section class="section is-small" id="escape">
+  <h2 class="title is-1 has-text-centered is-size-4-mobile">Esacpe Balls</h2>
+  <div class="columns is-multiline">
+    <div class="column is-6 p-1">
+      <video autoplay muted loop playsinline width="100%">
+        <source src="./static/videos-gk/jump-1.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="column is-6 p-1">
+      <video autoplay muted loop playsinline width="100%">
+        <source src="./static/videos-gk/jump-2.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="column is-6 p-1">
+      <video autoplay muted loop playsinline width="100%">
+        <source src="./static/videos-gk/squat-1.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="column is-6 p-1">
+      <video autoplay muted loop playsinline width="100%">
+        <source src="./static/videos-gk/squat-2.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
+</section>
+
+<section class="section is-small" id="camera">
+  <h2 class="title is-1 has-text-centered is-size-4-mobile">Onboard Camera (without mocap)</h2>
+  <div class="columns is-multiline">
+    <div class="column is-6 p-1">
+      <video autoplay muted loop playsinline width="100%">
+        <source src="./static/videos-gk/camera-1.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="column is-6 p-1">
+      <video autoplay muted loop playsinline width="100%">
+        <source src="./static/videos-gk/camera-2.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="column is-6 p-1">
+      <video autoplay muted loop playsinline width="100%">
+        <source src="./static/videos-gk/camera-3.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="column is-6 p-1">
+      <video autoplay muted loop playsinline width="100%">
+        <source src="./static/videos-gk/camera-4.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
+</section>
+
+<section class="section is-small" id="method" style="padding-top:2rem; padding-bottom:2rem;">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8 has-text-centered">
+        <h2 class="title is-3" style="margin-top:1.5rem;">Method</h2>
+        <figure class="image" style="margin:0 auto;">
+          <img src="./static/images/method.png" alt="Method image" style="max-width:100%; height:auto; display:block; margin:0 auto;">
+        </figure>
+
+      <div class="content" style="text-align:left; max-width:900px; margin:0.5rem auto 0;">
+        <p>
+          <strong>Humanoid Goalkeeper</strong> learns a single-stage, end-to-end reinforcement learning (RL) policy conditioned on ball position observations, advancing prior work by enabling:
+        </p>
+        <ul>
+          <li><span class="hl-green">Wide-range, whole-body, and autonomous interactions</span> with highly dynamic objects.</li>
+          <li>Hardware-feasible deployment across <span class="hl-green">different perception modalities</span>, including mocap and onboard camera.</li>
+          <li><span class="hl-green">Generalizable skills</span> including goalkeeping and jump/squat escaping balls.</li>
+        </ul>
+      </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section is-small ack-section" id="acknowledgements">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-12">
+        <div class="box ack-box">
+          <h2 class="title is-3 has-text-centered">Acknowledgements</h2>
+          <div class="content" style="text-align:left; margin:0 auto;">
+            <p>
+            This work was conducted during the author`s internship at <strong> the Embodied AI Center of Shanghai AI Laboratory </strong>. 
+            </p>
+
+            <p>
+            We would like to thank the <strong> Photonics and Electronics Center at Shanghai AI Laboratory </strong> for supporting the motion-capture system and providing access to the experimental field. 
+            </p>
+
+            <p>
+            We are especially grateful to <a href="https://scholar.google.com/citations?user=nepkga0AAAAJ&hl=en" target="_blank" rel="noopener"><strong>Yuman Gao</strong></a> for sharing the codebase for flying ball interception using an onboard camera, adapted 
+            from his previous work <a href="https://arxiv.org/pdf/2505.13834?" target="_blank" rel="noopener">Quadrupedal Robot Teams</a>.
+            </p>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered is-8">
+        <div class="content">
+          <p>
+            This Website is borrowed from <a href="https://nerfies.github.io/">NeRFies</a> and <a
+              href="https://umi-on-legs.github.io/">umi-on-legs</a>.
+          </p>
+        </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+
+</html>
